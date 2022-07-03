@@ -1,0 +1,195 @@
+{% include 'branchheader.html' %}
+
+<div class="tm-page-wrap mx-auto">
+            <section class="tm-banner">
+                <div class="tm-container-outer tm-banner-bg">
+                    <div class="container">
+
+                        <div class="row tm-banner-row tm-banner-row-header">
+                            <div class="col-xs-12">
+                                <div class="tm-banner-header">
+
+<script type="text/javascript">
+	function fun(){
+		var password=document.getElementById('password').value;
+		var cpassword=document.getElementById('cpassword').value;
+
+		if(password!=cpassword){
+			alert("PASSWORD DOES NOT MATCH");
+			document.getElementById("cpassword").value='';
+		}
+
+	}
+	function f2(){
+			var c=confirm("ARE YOU SURE TO THIS RETIRE DELIVERY BOY ")
+		}
+
+</script>
+
+
+<center>
+	<form method="post">
+		{% if data['updater'] %}
+
+
+	<table >
+
+		<h1>UPDATE DELIVERY BOYS</h1>
+
+		<table class="table" style="width:  700px">
+		<tr>
+			<th>BRANCH NAME</th>
+			<td>
+				<select name="branch" class="form-control">
+					 {% for row in data['branch'] %}
+					 {% if row['branch_id']==data['bid'] %}
+					<option value="{{row['branch_id']}}" selected>{{row['branch_name']}}</option>
+					{% else %}
+						<option value="{{row['branch_id']}}">{{row['branch_name']}}</option>
+					{% endif %}
+					{% endfor %}
+
+				</select>
+
+			</td>
+		</tr>
+		<tr>
+			<th>FIRST NAME</th>
+			<td><input type="text" name="fname"  class="form-control" value="{{data['updater'][0]['first_name']}}" required pattern="[a-zA-Z ]+$"></td>
+		</tr>
+		<tr>
+			<th>LAST NAME</th>
+			<td><input type="text" name="lname"  class="form-control" id="lat" value="{{data['updater'][0]['last_name']}}" required>
+			</td>
+		</tr>
+	
+		<tr>
+			<th>PHONE</th>
+			<td><input type="text" name="phone"  class="form-control" value="{{data['updater'][0]['phone']}}" required pattern="[7-9]{1}[0-9]{9}"></td>
+		</tr>
+		<tr>
+			<th>EMAIL</th>
+			<td>
+			<input type="email" name="email"  class="form-control" value="{{data['updater'][0]['email']}}" required></td>
+		</tr>
+		
+		<tr>
+			<td colspan="2" align="center"><input type="submit" name="update" value="UPDATE" class="btn btn-primary"></td>
+		</tr>
+	</table>
+
+
+
+		{% else %}
+
+	<table >
+
+		<h1>MANAGE DELIVERY BOYS</h1>
+
+		<table class="table" style="width:  700px">
+		<tr>
+			<th>FIRST NAME</th>
+			<td><input type="text" name="fname"  class="form-control" required pattern="[a-zA-Z ]+$"></td>
+		</tr>
+		<tr>
+			<th>LAST NAME</th>
+			<td><input type="text" name="lname"  class="form-control" id="lat" required pattern="[a-zA-Z ]+$">
+			</td>
+		</tr>
+	
+		<tr>
+			<th>PHONE</th>
+			<td><input type="text" name="phone"  class="form-control" required pattern="[7-9]{1}[0-9]{9}"></td>
+		</tr>
+		<tr>
+			<th>EMAIL</th>
+			<td>
+			<input type="email" name="email"  class="form-control" required></td>
+		</tr>
+		
+
+		<tr>
+			<th>USER NAME</th>
+			<td><input type="text" name="uname"  minlength="5" placeholder="User Name Must Be Atleast 5 Charecter " class="form-control" required></td>
+		</tr>
+		<tr>
+			<th>PASSWORD</th>
+			<td><input type="password" name="password"  minlength="8" placeholder="Password Must Be Atleast 8 Charecter" class="form-control" required id="password"></td>
+		</tr>
+		<tr>
+			<th>CONFIRM PASSWORD</th>
+			<td><input type="password" name="cpassword"  minlength="8" placeholder="Password Must Be Atleast 8 Charecter" class="form-control" required id="cpassword" onchange="fun()"></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><input type="submit" name="submit" value="register" class="btn btn-primary"></td>
+		</tr>
+	</table>
+
+
+		{% endif %}
+	</form>
+</center>
+ </div>    
+                            </div>  <!-- col-xs-12 -->                      
+                        </div> <!-- row -->
+                        
+                        <div class="tm-banner-overlay"></div>
+                    </div>  <!-- .container -->                   
+                </div>     <!-- .tm-container-outer -->                 
+            </section>
+        </div>
+
+
+
+<div style="color: black" align="center">
+<form method="post">
+<table align="right">
+	<tr>
+		<td><input type="text" name="search" placeholder="Search by Staff Name"></td>
+		<td><input type="submit" name="find" class="btn btn-info" value="SEARCH"></td>
+	</tr>
+</table>
+</form>
+<br><br><br><br>
+		{% if data['deliveryboys'] %}
+		<h1>DELIVERY BOYS IN YOUR BRANCH</h1>
+		<table class="table" width="600px">
+			<tr>
+				<th>DBOY ID</th>
+				<th>FIRST NAME</th>
+				<th>LAST NAME</th>
+				<th>PHONE</th>
+				<th>EMAIL</th>
+				<th>STATUS</th>
+				<!-- <TH>DELETE</TH> -->
+			</tr>
+			{% for row in data['deliveryboys'] %}
+			<tr>
+				<td>D__{{ row['boy_id'] }}</td>
+				<td>{{ row['first_name'] }}</td>
+				<td>{{row ['last_name']}}</td>
+				<td>{{ row['phone']}}</td>
+				<td>{{row['email']}}</td>
+				<td>{{row['user_type']}}</td>
+				{% if  row['user_type'] not in('retired','resigned') %}
+				<td><a href="?action=update&id={{ row['boy_id'] }}" class="btn btn-warning">UPDATE</a></td>
+				{% endif %}
+				
+				{% if row['user_type']=='dboy' %}
+				<td><a href="?action=inactive&id={{ row['username'] }}" class="btn btn-danger" >DEACTIVATE</a></td>
+				<td><a href="?action=retired&id={{ row['username'] }}" class="btn btn-info" onclick="return confirm('Are you sure you want to delete this account?');">TERMINATE</a></td>
+				{% else %}
+				{% if  row['user_type'] not in('retired','resigned') %}
+				<td><a href="?action=active&id={{ row['username'] }}" class="btn btn-success" >ACTIVATE</a></td>
+				<td><a href="?action=retired&id={{ row['username'] }}" class="btn btn-info" onclick="return confirm('Are you sure you want to delete this account?');">TERMINATE</a></td>
+				{% endif %}
+				{% endif %}
+			</tr>
+			{% endfor%}
+		</table>
+		{% else %}
+		<h2>NO DELIVERY BOYS IN YOUR BRANCH</h2>
+		{% endif %}
+
+</div>
+{% include 'footer.html' %}

@@ -1,0 +1,63 @@
+{% include 'dboyheader.html' %}
+
+<div class="tm-page-wrap mx-auto">
+            <section class="tm-banner">
+                <div class="tm-container-outer tm-banner-bg">
+                    <div class="container">
+
+                        <div class="row tm-banner-row tm-banner-row-header">
+                            <div class="col-xs-12">
+                                <div class="tm-banner-header">
+
+<center>
+<form method="post">
+
+
+		{% if data['works'] %}
+		<h1>VIEW PICKUPS</h1>
+		<table class="table" width="1000px">
+			<tr>
+				<th>BOOKING ID</th>
+				<th>CUSTOMER NAME</th>
+				<TH>PHONE</TH>
+				<TH>EMAIL</TH>
+				<th>FROM LOCATION</th>
+				<th>TO LOCATION</th>
+				
+
+			</tr>
+			{% for row in data['works'] %}
+			<tr>
+				<td>B__{{ row['booking_id'] }}</td>
+				<td>{{ row['first_name'] }}</td>
+				<td>{{row ['phone']}}</td>
+				<td>{{ row['email']}}</td>	
+				<td>{{ row['from_loc']}}</td>	
+				<td>{{ row['toloc']}}</td>	
+				{% if row['booking_status'] == 'payed' %}
+				<td><a href="?action=pickedup&id={{row['booking_id']}}" class="btn btn-primary">UPDATE AS PICKUPED</a></td>
+		
+				{% elif row['booking_status'] == 'pickedup' %}
+				<td><a href="?action=arrived&id={{row['booking_id']}}" class="btn btn-info">UPDATE AS ARRIVED</a></td>
+			
+				
+				{% endif %}
+			</tr>
+			{% endfor%}
+		</table>
+		{% else %}
+		<h2>NO PICKUPS</h2>
+		{% endif %}
+	</form>
+
+</center>
+ </div>    
+                            </div>  <!-- col-xs-12 -->                      
+                        </div> <!-- row -->
+                        
+                        <div class="tm-banner-overlay"></div>
+                    </div>  <!-- .container -->                   
+                </div>     <!-- .tm-container-outer -->                 
+            </section>
+        </div>
+{% include 'footer.html' %}

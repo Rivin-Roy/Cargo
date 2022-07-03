@@ -1,0 +1,140 @@
+{% include 'customerheader.html' %}
+
+<div class="tm-page-wrap mx-auto">
+            <section class="tm-banner">
+                <div class="tm-container-outer tm-banner-bg">
+                    <div class="container">
+
+                        <div class="row tm-banner-row tm-banner-row-header">
+                            <div class="col-xs-12">
+                                <div class="tm-banner-header">
+
+<script type="text/javascript">
+	function f2(){
+			var c=confirm("ARE YOU SURE TO CANCEL BOOKING ")
+</script>
+
+
+<center>
+<form method="post">
+	<form method="post">
+
+	{% if data['amt'] %}
+	<h1>PAY AND COMPLETE YOUR BOOKING</h1>
+		<table class="table" style="width: 600px">
+			<tr>
+				<th colspan="2" align="left">Payment Details</th>
+			</tr>
+			<tr>
+				<th align="left">CARD NUMBER</th>
+				<td colspan="2"><input type="text" name="cardno" class="form-control" required pattern="[0-9]{16}"><td>
+			</tr>
+			<tr>
+				<th>EXP DATE</th>
+				<th align="center">CV</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="monthdate" class="form-control" required pattern="[0-9,/]{5}"></td>
+				<td><input type="text" name="cv" class="form-control" required pattern="[0-9]{3}"></td>
+			</tr>
+			<tr>
+				<th>AMOUNT</th>
+				<td class="btn btn-warning" align="center">{{data['amt']}}</td>
+			<tr>
+				<td colspan="2" align="center"><input type="submit" name="pay" value="CONFIRM PAYMENT" class="btn btn-primary"></td>
+			</tr>
+		</table>
+	{% else %}
+
+
+		{% if data['bookings'] %}
+		<h1>CARGO BOOKING </h1>
+		<table class="table" width="1000px">
+			<tr>
+				<th>BOOKING ID</th>
+				<th>LOCATION</th>
+				<th>WEIGHT</th>
+				<th>HEIGHT</th>
+				<th>WIDTH</th>
+				<th>FROM BRANCH</th>
+				<th>TO BRANCH</th>
+				<th>BOOKING DATE</th>
+				<th>STATUS</th>
+
+			</tr>
+			{% for row in data['bookings'] %}
+			<tr>
+				<td>B__{{ row['booking_id']}}</td>
+				<td>{{ row['toloc'] }}</td>
+				<td>{{row ['weight']}}</td>
+				<td>{{ row['length']}}</td>
+				<td>{{row['width']}}</td>
+			{% for i in data['branch'] %}
+				{% if i['branch_id']==row['from_branch'] %}
+				<td>{{i['branch_name']}}</td>
+				{% endif %}
+				{% if i['branch_id']==row['to_branch'] %}
+				<td>{{i['branch_name']}}</td>
+
+				{% endif %}
+			{% endfor %}
+				<td>{{row['booking_date']}}</td>
+				{%if row['booking_status']=='pickedup' %}
+				<td>Parcel pickuped</td>
+
+				{%elif row['booking_status']=='arrived' %}
+				<td>Arrived at Starting Branch</td>
+
+				{%elif row['booking_status']=='dispatched' %}
+				<td>Arrived At Destination branch</td>
+
+				{%elif row['booking_status']=='Reached' %}
+				<td>Assigned to Delivery boy</td>
+				{% else %}
+				<td>{{row['booking_status']}}</td>
+				{% endif %}
+
+
+				{% if row['booking_status'] =='pending' and  row['amount']=='pending'  %}
+					<td>
+					<a href="?action1=cancel&boid={{ row['booking_id'] }}" class="btn btn-danger" onclick="return confirm('Are you sure to cancel booking?');">CANCEL</a>
+					<td>CONFIRMATION PENDING</td>
+				</td>
+				{% elif row['amount']!='pending' and row['booking_status']=='pending' %}
+					<td>AMOUNT TO PAY-{{row['amount']}}</td>
+					<td><a href="?action=pay&boid={{ row['booking_id'] }}&amt={{row['amount']}}" class="btn btn-warning">PAY</a></td>
+					<td><a href="?action1=cancel&boid={{ row['booking_id'] }}" class="btn btn-danger" onclick="return confirm('Are you sure to cancel booking?');">CANCEL</a></td>
+				
+				{% endif %}
+				{% if row['booking_status'] =='payed' %}
+					<td>
+					<a href="?action2=cancel&boid={{ row['booking_id'] }}&amt={{row['amount']}}" class="btn btn-danger" onclick="return confirm('Are you sure to cancel booking?');">CANCEL</a>
+					
+				</td>
+				{% endif %}
+			
+					
+			
+				
+			</tr>
+			{% endfor%}
+		</table>
+		{% else %}
+		<h2>NO CARGO BOOKINGS</h2>
+		{% endif %}
+	{% endif %}
+
+	</form>
+
+</center>
+
+ </div>    
+                            </div>  <!-- col-xs-12 -->                      
+                        </div> <!-- row -->
+                        
+                        <div class="tm-banner-overlay"></div>
+                    </div>  <!-- .container -->                   
+                </div>     <!-- .tm-container-outer -->                 
+            </section>
+        </div>
+{% include 'footer.html' %}
